@@ -283,6 +283,18 @@ state=$(fm_backend_agent_state tmux "$SESSION:$DASH_WINDOW")
   || fail "fm_backend_agent_state lost the dash-leading live window, got '$state'"
 pass "real tmux: fm_backend_agent_state resolves exact-marked, index, and dash-leading targets"
 
+# A window-rows read that fails without a definitive absent answer must
+# classify unreadable, never missing: only a successful exact-session read or
+# a "can't find session"-class response may produce missing, or a transient
+# tmux problem could license a duplicate launch.
+# shellcheck disable=SC2329  # Invoked indirectly by the sourced tmux adapter.
+tmux() { echo "tmux: simulated transient failure" >&2; return 1; }
+state=$(fm_backend_agent_state tmux "$TARGET")
+[ "$state" = unreadable ] \
+  || fail "a failed window read must classify unreadable, got '$state'"
+unset -f tmux
+pass "real tmux: a failed window read classifies unreadable, never missing"
+
 # --- kill and recovery-grade missing-window classification ------------------
 
 fm_backend_tmux_kill "$TARGET"

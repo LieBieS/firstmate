@@ -436,6 +436,21 @@ The portable regression `tests/fm-kimi-harness.test.sh` replays the recorded pan
 Each case is non-vacuous: dropping the 2.3.0 option pair from the complete-dialog test fails the plain case, making the announcement test never fire fails the root `.mcp.json` case, and making the page test never fire fails the paged case.
 The 2.0.0 wording keeps its existing cases in the same suite.
 
+### Agent-state endpoint anchoring
+
+`fm_backend_tmux_agent_state` resolves the recorded window to its stable `@id` inside the exact recorded session before any pane read, because tmux answers fuzzy targets from a neighbor it matched itself.
+Verified on 2026-10-23 with tmux 3.4 on Linux x86_64 against an isolated server (`tmux -L`), where `probe` held `main`, `fm-live-worker`, and `-x`, and `fmprefix` held `fm-worker`:
+
+```text
+tmux display-message -p -t probe:no-such-window '#{pane_id}'   -> %0, exit 0 (the absent window falls back to the current pane)
+tmux list-windows -t fm -F '#{session_name}:#{window_name}'    -> fmprefix:fm-worker, exit 0 (a missing session prefix-matches a live one)
+tmux display-message -p -t fm:fm-worker '#{pane_tty}'          -> /dev/pts/6, exit 0 (reads the neighbor's pane)
+```
+
+Under the earlier name-grep membership check, `fm_backend_agent_state tmux fm:fm-worker` returned `ambiguous` about the neighbor's window, `probe:-x` returned `missing` for a live dash-named window (a bare `grep -qx` pattern cannot take a leading dash), and `=probe:=fm-live-worker` plus `probe:<index>` returned `missing` for live windows.
+After the fix those same calls return `missing`, `dead`, `dead`, and `dead` respectively.
+The regression is pinned by the "agent_state exact endpoint anchoring" block in `tests/fm-backend-tmux-smoke.test.sh`, run against real tmux.
+
 ## Claude workspace trust
 
 Verified 2026-09-03 on Claude Code 2.1.259.

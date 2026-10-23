@@ -201,6 +201,24 @@ fm_backend_tmux_window_id() {  # <session-name> <window-name|index|@id>
     2) return 3 ;;
     *) return 2 ;;
   esac
+  if ! printf '%s\n' "$rows" | grep -q '|'; then
+    # A names-only inventory still proves which windows the session holds:
+    # match the selector literally and answer the recorded session:window
+    # target so every later read stays anchored on the resolved endpoint.
+    case "$selector" in
+      @*|*[!0-9]*)
+        while IFS= read -r window_name; do
+          [ -n "$window_name" ] || continue
+          [ "$window_name" = "$selector" ] || continue
+          printf '%s:%s\n' "$session" "$selector"
+          return 0
+        done <<EOF
+$rows
+EOF
+        ;;
+    esac
+    return 1
+  fi
   while IFS='|' read -r window_id window_index window_name; do
     case "$selector" in
       @*) [ "$window_id" = "$selector" ] || continue ;;

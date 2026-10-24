@@ -1,0 +1,15 @@
+== fm-backend
+ok - fm-spawn.sh: an explicit --backend tmux resolves silently and writes no backend= (missing means tmux)
+ok - fm-spawn.sh: explicit --backend tmux wins over an ambient HERDR_ENV=1 auto-detect marker
+ok - fm-spawn.sh: auto-detect resolves nested tmux-in-herdr to tmux and stays silent end to end
+exit=0
+== fm-secondmate-liveness
+ok - poll probe: remote states map to the same contract as local, one call each
+ok - poll probe: unreachable or inconclusive remote reads preserve the route
+# all fm-secondmate-liveness tests passed
+exit=0
+== fm-send-strict
+ok - fm-send strict: unmatched single-colon explicit targets must verify live before sending
+ok - fm-send strict: fm-prefixed Herdr sessions remain explicit backend targets
+ok - fm-send strict: healthy fm-<id> sends record the steer and ring once
+exit=0

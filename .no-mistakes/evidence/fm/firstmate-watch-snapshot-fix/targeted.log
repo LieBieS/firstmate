@@ -1,0 +1,44 @@
+== fm-backend-tmux-smoke
+ok - real tmux: a failed window read classifies unreadable, never missing
+ok - real tmux: fm_backend_target_exists rejects a killed window while another session stays alive
+ok - real tmux: fm_backend_target_exists rejects a missing session while another session stays alive
+ok - real tmux: kill removes the window and the readable session inventory authoritatively classifies it missing
+ok - real tmux: container_ensure names the pane's own session, not a more recent grouped session
+ok - real tmux: container_ensure falls back to the pane's surviving session when the $TMUX session id is stale
+exit 0
+== fm-tmux-agent-liveness
+ok - cursor composer: real typed text still reads pending, so the injection guard holds
+ok - cursor composer: an identical screen stays unknown when the pane is not Cursor
+ok - cursor composer: a stale Cursor screen over a dead shell never reads empty
+ok - commandcode composer: an idle pane reads empty although its cursor row is blind and its placeholder is bright
+ok - commandcode composer: typed text still reads pending
+ok - commandcode composer: an identical screen stays unknown when the pane is not Command Code
+exit 0
+== fm-fleet-snapshot-contribution-input
+ok - contribution-input propagates a failing jq assembly as a non-zero exit
+ok - contribution-input assembles a >128KiB backlog without exceeding the argv limit
+exit 0
+== fm-tmux-submit-busy
+ok - fm_tmux_submit_enter_core: idle pane clears composer on first Enter - returns empty as before
+ok - fm_tmux_submit_enter_core: busy conversion is limited to proven pending input
+ok - fm_tmux_submit_core: failed baseline capture disables busy unknown conversion
+ok - fm_tmux_submit_enter_core: pending-unproven retries without busy conversion
+ok - fm_tmux_submit_enter_core: unrecognized states skip busy conversion
+ok - fm_pane_is_busy: Claude spinner is scoped, multi-frame, and backward-compatible
+exit 0
+== fm-send-strict
+ok - fm-send strict: unset FM_HOME fails before target resolution
+ok - fm-send strict: unresolvable selectors do not fall back to tmux
+ok - fm-send strict: prefixless herdr pane ids are rejected before tmux fallback
+ok - fm-send strict: unmatched single-colon explicit targets must verify live before sending
+ok - fm-send strict: fm-prefixed Herdr sessions remain explicit backend targets
+ok - fm-send strict: healthy fm-<id> sends record the steer and ring once
+exit 0
+== fm-secondmate-liveness
+ok - sweep: a mate mid-episode under the shared liveness lock is skipped entirely
+ok - relaunch: the spawn timeout bounds the lock wait before touching the endpoint
+ok - sweep: an unreadable or unwritable relaunch ledger refuses to kill or spawn
+ok - poll probe: remote states map to the same contract as local, one call each
+ok - poll probe: unreachable or inconclusive remote reads preserve the route
+# all fm-secondmate-liveness tests passed
+exit 0

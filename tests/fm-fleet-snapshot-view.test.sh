@@ -39,6 +39,9 @@ case "${1:-}" in
     esac
     exit 0 ;;
   display-message)
+    case "$target" in
+      @*) target=$(sed -n 's/^window=[^:]*://p' "${FM_HOME:?}"/state/*.meta | sed -n "${target#@}p") ;;
+    esac
     case "$*" in
       *pane_current_command*)
         case "$target" in

@@ -399,8 +399,8 @@ case "${1:-}" in
         printf '%s\n' main
       fi
     }
-    case " \$*" in
-      *window_id*) _fm_fake_names | awk 'NF { printf "@%d|%d|%s\n", NR, NR - 1, \$0 }' ;;
+    case " $*" in
+      *window_id*) _fm_fake_names | awk 'NF { printf "@%d|%d|%s\n", NR, NR - 1, $0 }' ;;
       *) _fm_fake_names ;;
     esac
     exit 0

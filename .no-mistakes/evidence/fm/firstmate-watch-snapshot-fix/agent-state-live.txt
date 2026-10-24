@@ -1,0 +1,17 @@
+## HEAD
+fmx:agentwin => alive
+fmx:shellwin => dead
+fmx:nosuch => missing
+fm:agentwin => missing
+fm:shellwin => missing
+fmx:@0 => alive
+fmx:1 => dead
+fmx:@9 => missing
+nosess:win => missing
+## BASE (29c3e86)
+fmx:agentwin => alive
+fmx:nosuch => missing
+fm:agentwin => alive
+fm:shellwin => dead
+## no server
+fmx:agentwin => missing

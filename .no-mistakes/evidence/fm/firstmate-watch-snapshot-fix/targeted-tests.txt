@@ -1,0 +1,15 @@
+== fm-tmux-agent-liveness
+ok - cursor composer: a stale Cursor screen over a dead shell never reads empty
+ok - commandcode composer: an idle pane reads empty although its cursor row is blind and its placeholder is bright
+ok - commandcode composer: typed text still reads pending
+ok - commandcode composer: an identical screen stays unknown when the pane is not Command Code
+== fm-secondmate-liveness
+ok - sweep: an unreadable or unwritable relaunch ledger refuses to kill or spawn
+ok - poll probe: remote states map to the same contract as local, one call each
+ok - poll probe: unreachable or inconclusive remote reads preserve the route
+# all fm-secondmate-liveness tests passed
+== fm-backend-tmux-smoke
+ok - real tmux: fm_backend_target_exists rejects a missing session while another session stays alive
+ok - real tmux: kill removes the window and the readable session inventory authoritatively classifies it missing
+ok - real tmux: container_ensure names the pane's own session, not a more recent grouped session
+ok - real tmux: container_ensure falls back to the pane's surviving session when the $TMUX session id is stale
